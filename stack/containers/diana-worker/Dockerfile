@@ -5,19 +5,20 @@
 # - Change the queue by overriding CMD on start up
 
 FROM python:3.6-stretch
-
 MAINTAINER Derek Merck <derek_merck@brown.edu>
 
-WORKDIR /usr/src/app
+RUN apt update  \
+  && apt install -y git
 
-RUN apt update && apt install -y git
+RUN useradd -ms /bin/bash celery
 
-RUN git clone https://github.com/derekmerck/diana-star
+USER celery
+WORKDIR /home/celery
 
-RUN pip install -r diana-star/requirements.txt
+RUN git clone https://github.com/derekmerck/diana-star \
+  && pip install -r diana-star/requirements.txt
 
-RUN sed -i 's^open("(.*)",^services.yml^' /usr/src/app/diana-star/apps/celery/celerycfg.py
-
-RUN echo "export PYTHONPATH=/usr/src/app/diana-star" >> /root/.bashrc
+RUN sed -i 's^open("(.*)",^services.yml^' diana-star/apps/celery/celerycfg.py
+RUN echo "export PYTHONPATH=/usr/src/app/diana-star" >> .bashrc
 
 CMD python diana-star/apps/celery/dcelery.py worker
