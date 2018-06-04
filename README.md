@@ -10,7 +10,8 @@ A Diana service stack with distributed ("star") functions
 
 ```bash
 $ git clone https://github.com/derekmerck/diana-star
-$ conda env create -f conda_env.yml -n dstar
+$ cd diana-star
+$ conda env create -f conda_env.yml -n diana
 ```
 
 
