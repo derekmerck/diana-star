@@ -1,7 +1,7 @@
 # DIANA Test Bench Setup
 # Merck, Spring 2018
 #
-# $ pushd test/vagrant && vagrant up && popd
+# $ pushd test/vagrant && vagrant destroy && vagrant up && popd
 # $ cd stack
 # $ ansible-playbook -i ../_secrets/dev_inventory.yml ../test/test_stack.yml
 

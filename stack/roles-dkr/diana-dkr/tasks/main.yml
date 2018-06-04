@@ -27,7 +27,7 @@
       - "broker-redis"
       - "dicom-orthanc"
       - "index-splunk"
-    volume:
+    volumes:
     # Mount service info
       - "/tmp/services.yml:/usr/src/app/services.yml"
     # File workers need access to host and shared

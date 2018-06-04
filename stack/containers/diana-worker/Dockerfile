@@ -18,4 +18,6 @@ RUN pip install -r diana-star/requirements.txt
 
 RUN sed -i 's^open("(.*)",^services.yml^' /usr/src/app/diana-star/apps/celery/celerycfg.py
 
+ENV PYTHONPATH="/usr/src/app/diana-star"
+
 CMD python /usr/src/app/diana-star/apps/celery/dcelery.py worker
