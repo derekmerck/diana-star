@@ -1,0 +1,23 @@
+# $ conda env create -f conda_env.yml -n dstar
+
+name: dstar36
+
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - aenum
+  - attr
+  - celery
+  - conda
+  - dill
+  - pillow
+  - pip
+  - attrs
+  - python=3.6
+  - redis
+  - requests
+  - pydicom
+
+prefix: /opt/conda/envs/dstar36

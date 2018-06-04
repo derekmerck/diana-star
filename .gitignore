@@ -1,0 +1,9 @@
+.idea
+*.db
+*.retry
+*secret*
+
+_secrets
+_old
+_archive
+

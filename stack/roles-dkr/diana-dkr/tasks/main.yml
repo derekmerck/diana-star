@@ -1,0 +1,30 @@
+---
+
+- name: Copy secrets.yml to host
+  copy:
+    source: ../secrets.yml
+    dest:   /tmp/secrets.yml
+
+- name: Build DIANA docker image
+  docker_image:
+     path: containers/diana
+     name: diana/worker
+
+- name: Start Worker
+  docker_container:
+    name: diana-worker
+    image: diana/worker
+    state: running
+    init: true
+    # Worker needs access to all central services
+    links:
+      - "broker-redis"
+      - "dicom-orthanc"
+      - "index-splunk"
+    volume:
+    # Mount secrets
+      - "/tmp/secrets.yml:/usr/src/app/secrets.yml"
+    # File workers need access to disk
+      - "/data:/data"
+    # Learn workers may need access to gpus
+    #  - "/dev:/dev:shared"

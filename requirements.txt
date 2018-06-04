@@ -1,0 +1,10 @@
+aenum
+ansible
+attrs
+celery
+dateutils
+dill
+pillow
+redis
+pydicom
+requests

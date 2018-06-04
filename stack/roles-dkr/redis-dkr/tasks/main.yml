@@ -1,0 +1,10 @@
+---
+
+- name: Setup redis
+  docker_container:
+    name: broker-redis
+    image: redis
+    command: redis-server
+    state: running
+    ports:
+      - "6379:6379"

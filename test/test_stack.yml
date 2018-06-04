@@ -1,0 +1,39 @@
+# DIANA Test Bench Setup
+# Merck, Spring 2018
+
+# > ansible-playbook test_stack.yml -i secrets/dev_inventory.yml
+
+---
+
+# ------------------
+# First for hec endpoint and logging
+
+- name: Setup Index Endpoint (splunk)
+  hosts: indexer
+  roles:
+  - role: splunk-dkr
+
+
+# -------------------
+
+- name: Setup DICOM Endpoint (orthanc)
+  hosts: dicom
+  roles:
+  - role: orthanc-dkr
+
+
+# -------------------
+
+- name: Setup Task Broker (redis)
+  hosts: broker
+  roles:
+  - role: redis-dkr
+
+
+# -------------------
+# Can link celery broker, index, and endpoints now
+
+- name: Setup Diana Workers (py36)
+  hosts: diana
+  roles:
+  - role: diana-dkr
