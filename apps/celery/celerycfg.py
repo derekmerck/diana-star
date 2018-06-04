@@ -1,4 +1,4 @@
-import ruamel_yaml as yaml
+import ruamel.yaml as yaml
 
 # Change this line to point at your project service configs
 # with open("../../_secrets/dev_services.yml", "r") as f:

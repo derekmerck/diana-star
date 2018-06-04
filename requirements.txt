@@ -6,6 +6,6 @@ dateutils
 dill
 pillow
 redis
-ruamel-yaml
+ruamel.yaml
 pydicom
 requests
