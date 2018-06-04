@@ -5,16 +5,22 @@
     src:   services.yml.j2
     dest:  /tmp/services.yml
 
-- name: Build DIANA docker image
-  docker_image:
-     path: containers/diana
-     name: diana/worker
-  delegate: localhost
+- name: git diana-star source
+  git:
+    repo: https://github.com/derekmerck/diana-star
+    dest: /opt/diana-star
+  become: yes
 
+- name: Build diana-worker docker image
+  docker_image:
+     path: /opt/diana-star/stack/containers/diana-worker
+     name: diana-worker
+
+# Should allow for multiple, give them unique ids
 - name: Start Worker
   docker_container:
-    name: diana-worker
-    image: diana/worker
+    name:  diana-worker
+    image: diana-worker
     state: started
     # Worker needs access to all central services
     links:
