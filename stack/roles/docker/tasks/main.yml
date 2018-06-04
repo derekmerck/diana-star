@@ -1,25 +1,49 @@
 # https://gist.github.com/rbq/886587980894e98b23d0eee2a1d84933
 ---
 
-- name:    Install prerequisites
+- name:   Install prerequisites
   package:
     name:
       - apt-transport-https
       - ca-certificates
       - curl
       - software-properties-common
+      - python-pip
     update_cache: True
   become: yes
   ignore_errors: yes  # Sometimes tries to update an older docker...
 
-- name:    Add Docker GPG key
+- name:   Add Docker GPG key
   apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
+    url:  https://download.docker.com/linux/debian/gpg
   become: yes
 
-- name:    Add Docker APT repository
+- name:   Add Docker APT repository
   apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable
+    repo: deb [arch=amd64] https://download.docker.com/linux/{{ ansible_os_family | lower }} {{ansible_distribution_release}} stable
+  become: yes
 
-- name:    Install Docker
-  apt:     name=docker-ce
+- name:   Install Docker
+  apt:    name=docker-ce
+  become: yes
+
+- name: Add ansible user to docker
+  user:
+    name: "{{ ansible_ssh_user }}"
+    group: docker
+  become: yes
+
+# This can be wrong the first time, it will report "linkdown" until
+# the docker bridge comes up once the first containers are connected
+- name:   Get dockerhost
+  shell:  /sbin/ip route | awk '/docker0/ { print $NF }'
+  register: dockerhost_response
+
+- set_fact:
+    dockerhost_ip: "{{ dockerhost_response.stdout }}"
+
+- debug:
+    msg:  "Setting dockerhost bridge addr {{ dockerhost_ip }}"
+
+- name:   Get docker-py
+  pip:    name=docker-py

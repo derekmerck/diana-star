@@ -1,0 +1,21 @@
+orthanc:
+  host: dicom-orthanc
+  port: 8142
+  user: orthanc
+  password: {{ orthanc_pw }}
+
+redis:
+  host: broker-redis
+  port: 6379
+  broker_db: 1
+  result_db: 2
+  user: redis
+  password: {{ redis_pw }}
+
+splunk:
+  host: index-splunk
+  port: 8000
+  user: admin
+  password: {{ splunk_pw }}
+  hec_port: 8089
+  hec_token: {{ diana_tok }}

@@ -1,21 +1,18 @@
 import ruamel_yaml as yaml
 
-with open("../../_secrets/secrets.yml", "r") as f:
-    secrets = yaml.safe_load(f)
+# Change this line to point at your project service configs
+with open("../../_secrets/dev_services.yml", "r") as f:
+    services = yaml.safe_load(f)
 
-SERVICE_DOMAIN = "dev"
-secrets = secrets.get('services').get(SERVICE_DOMAIN)
+splunk_cfg  = services.get('splunk')
+orthanc_cfg = services.get('orthanc')
+redis_cfg   = services.get('redis')
 
-splunk = secrets.get('splunk')
-orthanc = secrets.get('orthanc')
-redis = secrets.get('redis')
-
-broker_url = redis.get('broker_url')
-result_backend = redis.get('result_backend')
-
-# task_annotations = {'*': {'rate_limit': '100/m'}}
+broker_url     = "redis://{host}:{port}/{broker_db}".format(**redis_cfg)
+result_backend = "redis://{host}:{port}/{result_db}".format(**redis_cfg)
 
 timezone = 'America/New_York'
+
 beat_schedule = {
     'status_report': {
         'task': 'message',

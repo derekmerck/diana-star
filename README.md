@@ -1,7 +1,10 @@
-# diana-star
+# Diana-Star
 
 Derek Merck <derek_merck@brown.edu>  
 Spring 2018  
+
+## Diana service stack with distributed ("star") functions
+
 
 
 ## Test scripts with connect and distrib app

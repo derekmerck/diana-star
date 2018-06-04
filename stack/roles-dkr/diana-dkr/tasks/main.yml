@@ -1,30 +1,30 @@
 ---
 
-- name: Copy secrets.yml to host
-  copy:
-    source: ../secrets.yml
-    dest:   /tmp/secrets.yml
+- name: Copy service config to host
+  template:
+    src:   services.yml.j2
+    dest:  /tmp/services.yml
 
 - name: Build DIANA docker image
   docker_image:
      path: containers/diana
      name: diana/worker
+  delegate: localhost
 
 - name: Start Worker
   docker_container:
     name: diana-worker
     image: diana/worker
-    state: running
-    init: true
+    state: started
     # Worker needs access to all central services
     links:
       - "broker-redis"
       - "dicom-orthanc"
       - "index-splunk"
     volume:
-    # Mount secrets
-      - "/tmp/secrets.yml:/usr/src/app/secrets.yml"
-    # File workers need access to disk
+    # Mount service info
+      - "/tmp/services.yml:/usr/src/app/services.yml"
+    # File workers need access to host and shared
       - "/data:/data"
     # Learn workers may need access to gpus
     #  - "/dev:/dev:shared"

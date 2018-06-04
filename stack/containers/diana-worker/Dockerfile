@@ -14,6 +14,6 @@ WORKDIR /usr/src/app
 
 RUN pip install git+https://github.com/derekmerck/diana-star
 
-# COPY secrets.yml /usr/src/app/
+RUN sed -i "s^open\(\"(.*)\",^services.yml^" /usr/src/app/diana-star/apps/celery/celerycfg.py
 
-CMD python /usr/src/app/diana-star/diana/distrib/dcelery.py worker
+CMD python /usr/src/app/diana-star/apps/celery/dcelery.py worker

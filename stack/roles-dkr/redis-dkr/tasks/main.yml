@@ -1,10 +1,12 @@
 ---
+- set_fact:
+    redis_pw: "{{ redis_pw }}"
 
-- name: Setup redis
+- name: Setup Redis container
   docker_container:
     name: broker-redis
     image: redis
     command: redis-server
-    state: running
+    state: started
     ports:
       - "6379:6379"
