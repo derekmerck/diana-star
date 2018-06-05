@@ -1,5 +1,4 @@
-sudo: required
-dist: stretch
+dist: trusty
 language: python
 python:
   - "3.6"
@@ -21,15 +20,19 @@ services:
 #  - mkdir -p $HOME/.docker
 #  - echo '{"experimental":"enabled"}' > "$HOME/.docker/config.json"
 
-install:
-  - pushd stack
-  # without an inv, it will use localhost
-  - ansible-playbook -i ../test/local_inv.yml ../test/distrib_play.yml
-  - popd
+install: true
+
+# default pip install -r requirements.txt
+
 
 #before_script:
 
 script:
+
+  - pushd stack
+  - ansible-playbook -i ../test/local_inv.yml ../test/distrib_play.yml
+  - popd
+
   - python test/test_distrib.py
 
 #after_script: true
