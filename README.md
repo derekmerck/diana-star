@@ -23,13 +23,13 @@ $ pushd test/vagrant && vagrant destroy && vagrant up && popd
 
 # Create an orthanc and an index
 $ cd stack
-$ ansible-playbook -i inv.yml ../test/simple_services.yml
+$ ansible-playbook -i inv.yml ../test/simple_play.yml
 
 # Run a script
 $ python test/diana.py
 
 # Create a broker and some virtual workers for default
-$ ansible-playbook -i inv.yml ../test/distrib_services.yml
+$ ansible-playbook -i inv.yml ../test/distrib_play.yml
 
 # Create a local worker to manage the heartbeat and specialized jobs
 $ python apps/celery/dcelery worker -n heartbeat -B -Q "file,learn"

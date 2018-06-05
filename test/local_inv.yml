@@ -1,0 +1,16 @@
+---
+all:
+  hosts:
+    localhost:
+      ansible_host: 128.0.0.1
+      ansible_connection: local
+
+  children:
+    indexer:
+      hosts:  localhost
+    broker:
+      hosts:  localhost
+    dicom:
+      hosts:  localhost
+    diana:
+      hosts:  localhost

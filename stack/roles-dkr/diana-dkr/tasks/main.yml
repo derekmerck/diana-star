@@ -29,8 +29,8 @@
       - "index-splunk"
     volumes:
     # Mount service info
-      - "/tmp/services.yml:/usr/src/app/services.yml"
+      - "/tmp/services.yml:/home/celery/services.yml"
     # File workers need access to host and shared
-      - "/data:/data"
+      - "/tmp/data:/home/celery/data"
     # Learn workers may need access to gpus
     #  - "/dev:/dev:shared"
