@@ -8,3 +8,6 @@ _old
 _archive
 dump*
 notes.md
+
+build
+*.egg-*

@@ -1,0 +1,6 @@
+---
+
+orthanc_pw: passw0rd!
+redis_pw: passw0rd!
+splunk_pw: passw0rd!
+diana_tok: 1234567

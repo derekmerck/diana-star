@@ -12,6 +12,7 @@ A Diana service stack with distributed ("star") functions
 $ git clone https://github.com/derekmerck/diana-star
 $ cd diana-star
 $ conda env create -f conda_env.yml -n diana
+$ pip install -e ./packages
 ```
 
 
