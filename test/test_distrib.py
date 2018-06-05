@@ -61,7 +61,7 @@ if __name__ == "__main__":
     dcm_dir = "/Users/derek/data/DICOM/airway phantom/DICOM/PA2/ST1/SE1"
 
     files = File(location=dcm_dir)
-    orthanc = Orthanc()
+    orthanc = Orthanc(host="192.168.1.102")
     clf = Classifier()
     redis = Redis(host="192.168.33.10")
 

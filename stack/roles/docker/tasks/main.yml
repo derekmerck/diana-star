@@ -1,6 +1,11 @@
 # https://gist.github.com/rbq/886587980894e98b23d0eee2a1d84933
 ---
 
+
+#  - sudo apt-get update -qq
+#  - sudo apt-get -y install docker-ce
+
+
 - name:   Install prerequisites
   package:
     name:
@@ -15,17 +20,24 @@
 
 - name:   Add Docker GPG key
   apt_key:
-    url:  https://download.docker.com/linux/debian/gpg
+    url:  https://download.docker.com/linux/{{ ansible_os_family | lower }}/gpg
   become: yes
 
 - name:   Add Docker APT repository
   apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/{{ ansible_os_family | lower }} {{ansible_distribution_release}} stable
+    repo: deb [arch=amd64] https://download.docker.com/linux/{{ ansible_os_family | lower }} {{ansible_distribution_release}} edge
   become: yes
 
 - name:   Install Docker
   apt:    name=docker-ce
   become: yes
+
+- name: Switch to experimental mode
+  lineinfile:
+    path: $HOME/.docker/config.json
+    line: {"experimental":"enabled"}
+    state: present
+    create: yes
 
 - name: Add ansible user to docker
   user:
@@ -47,3 +59,10 @@
 
 - name:   Get docker-py
   pip:    name=docker-py
+
+- name: Get docker version
+  shell: docker --version && docker-compose version
+  register: result
+
+- debug:
+    var: result

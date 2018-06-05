@@ -16,6 +16,7 @@
   docker_image:
      path: /opt/diana-star/stack/containers/diana-worker
      name: diana-worker
+     force: yes
 
 # Should allow for multiple, give them unique ids
 - name: Start Worker
