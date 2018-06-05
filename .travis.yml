@@ -5,6 +5,8 @@ python:
 services:
   - docker
 
+env: PYBIN=/home/travis/virtualenv/python3.6/bin/python3.6
+
 #install: true
 #  - FLAVOR=( echo $(lsb_release -is) | tr '[:upper:]' '[:lower:]' )
 #  - NAME=$(lsb_release -cs)
