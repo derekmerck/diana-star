@@ -20,9 +20,9 @@ services:
 #  - mkdir -p $HOME/.docker
 #  - echo '{"experimental":"enabled"}' > "$HOME/.docker/config.json"
 
-install: true
-
-# default pip install -r requirements.txt
+install:
+  - pip install -U pip
+  - pip install -r requirements.txt
 
 
 #before_script:
@@ -30,7 +30,7 @@ install: true
 script:
 
   - pushd stack
-  - ansible-playbook -i ../test/local_inv.yml ../test/distrib_play.yml
+  - ansible-playbook -i ../test/local_inv.yml ../test/dstack_play.yml
   - popd
 
   - python test/test_distrib.py
