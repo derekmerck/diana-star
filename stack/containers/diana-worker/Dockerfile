@@ -11,14 +11,13 @@ RUN apt update  \
   && apt install -y git
 
 RUN useradd -ms /bin/bash celery
-
-USER celery
 WORKDIR /home/celery
 
-RUN git clone https://github.com/derekmerck/diana-star \
-  && pip install -r diana-star/requirements.txt
+RUN git clone https://github.com/derekmerck/diana-star
+RUN pip install -r diana-star/requirements.txt
+RUN sed -i 's^open(".*",^open("services.yml",^' diana-star/apps/celery/celerycfg.py
+RUN echo "export PYTHONPATH=~/diana-star" >> .bashrc
 
-RUN sed -i 's^open("(.*)",^services.yml^' diana-star/apps/celery/celerycfg.py
-RUN echo "export PYTHONPATH=/usr/src/app/diana-star" >> .bashrc
-
-CMD python diana-star/apps/celery/dcelery.py worker
+USER celery
+WORKDIR /home/celery/diana-star/apps/celery
+CMD python dcelery.py worker

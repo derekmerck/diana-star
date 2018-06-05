@@ -25,6 +25,7 @@ def test_batching(count=20):
         item = clf.starhandle(item)
         assert (item.meta.get('classified'))
 
+
 def test_celery():
 
     dx = files.get("IM2", file=True).get()
