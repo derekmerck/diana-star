@@ -205,11 +205,12 @@ OrthancEndpoint.find_item_query = find_item_query
 class RedisEndpoint(Endpoint, DianaFactory):
     service = attr.ib( default="redis" )
     db = attr.ib( default=0 )
+    host = attr.ib( default="localhost" )
     inventory = attr.ib( init=False )
 
     @inventory.default
     def connect(self):
-        return Redis(db=self.db)
+        return Redis(host=self.host, db=self.db)
 
     def put(self, item, **kwargs):
         self.inventory.set( item.id, dumps(item) )

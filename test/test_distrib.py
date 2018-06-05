@@ -63,6 +63,6 @@ if __name__ == "__main__":
     files = File(location=dcm_dir)
     orthanc = Orthanc()
     clf = Classifier()
-    redis = Redis()
+    redis = Redis(host="192.168.33.10")
 
     test_celery()

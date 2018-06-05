@@ -35,3 +35,6 @@
       - "/tmp/data:/home/celery/data"
     # Learn workers may need access to gpus
     #  - "/dev:/dev:shared"
+    env:
+      TZ: America/New_York
+      PYTHONPATH: /home/celery/diana-star
