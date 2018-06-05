@@ -10,13 +10,21 @@ MAINTAINER Derek Merck <derek_merck@brown.edu>
 RUN apt update  \
   && apt install -y git
 
+ENV TINI_VERSION v0.18.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+RUN chmod +x /tini
+ENTRYPOINT ["/tini", "--"]
+
 RUN useradd -ms /bin/bash celery
 WORKDIR /home/celery
+USER celery
 
 RUN git clone https://github.com/derekmerck/diana-star
-RUN pip install -r diana-star/requirements.txt
 RUN sed -i 's^open(".*",^open("services.yml",^' diana-star/apps/celery/celerycfg.py
 RUN echo "export PYTHONPATH=~/diana-star" >> .bashrc
+
+USER root
+RUN pip install -r diana-star/requirements.txt
 
 USER celery
 WORKDIR /home/celery/diana-star/apps/celery

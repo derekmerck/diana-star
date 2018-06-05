@@ -1,14 +1,15 @@
 ---
 
-- name: Copy service config to host
-  template:
-    src:   services.yml.j2
-    dest:  /tmp/services.yml
-
 - name: git diana-star source
   git:
     repo: https://github.com/derekmerck/diana-star
     dest: /opt/diana-star
+  become: yes
+
+- name: Copy service config to host
+  template:
+    src:   services.yml.j2
+    dest:  /opt/diana-star/apps/celery/services.yml
   become: yes
 
 - name: Build diana-worker docker image
@@ -29,7 +30,7 @@
       - "index-splunk"
     volumes:
     # Mount service info
-      - "/tmp/services.yml:/home/celery/services.yml"
+      - "/opt/diana-star/apps/celery/services.yml:/home/celery/diana-star/apps/celery/services.yml"
     # File workers need access to host and shared
       - "/tmp/data:/home/celery/data"
     # Learn workers may need access to gpus
