@@ -5,15 +5,18 @@ python:
 services:
   - docker
 
-addons:
-  apt:
-    packages:
-      - libssl1.0.0
+#addons:
+#  apt:
+#    packages:
+#      - libssl1.0.0
 
 before_install:
 
   - pip install -U pip
   - pip install -e ./packages/diana
+
+  # Bug in gpg key request?
+  - pip2 install requests==2.5.3
 
 install:
   - pushd stack
