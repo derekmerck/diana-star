@@ -21,6 +21,7 @@
 - name:   Add Docker GPG key
   apt_key:
     url:  https://download.docker.com/linux/{{ ansible_os_family | lower }}/gpg
+    validate_certs: False
   become: yes
 
 - name:   Add Docker APT repository
@@ -35,7 +36,8 @@
 - name: Switch to experimental mode
   lineinfile:
     path: $HOME/.docker/config.json
-    line: {"experimental":"enabled"}
+    line: |
+      {"experimental": "enabled"}
     state: present
     create: yes
 
@@ -61,7 +63,7 @@
   pip:    name=docker-py
 
 - name: Get docker version
-  shell: docker --version && docker-compose version
+  shell: docker --version
   register: result
 
 - debug:

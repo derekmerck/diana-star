@@ -2,50 +2,24 @@ dist: trusty
 language: python
 python:
   - "3.6"
-  - "2.7"
 services:
   - docker
 
-#env: PYBIN=/home/travis/virtualenv/python3.6/bin/python3.6
-
-#install: true
-#  - FLAVOR=( echo $(lsb_release -is) | tr '[:upper:]' '[:lower:]' )
-#  - NAME=$(lsb_release -cs)
-#  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$FLAVOR $NAME edge"
-#
-#  # Add docker edge
-#  - sudo apt-get update -qq
-#  - sudo apt-get -y install docker-ce
-#  - docker --version
-#  - docker-compose version
-#
-#  # Put it into "experimental" for manifest function
-#  - mkdir -p $HOME/.docker
-#  - echo '{"experimental":"enabled"}' > "$HOME/.docker/config.json"
-
 before_install:
 
-  - sudo apt update
-  - python --version
-  - python2 --version
-  - python3 --version
   - pip install -U pip
-
-install:
   - pip install -e ./packages
 
-#  - pip install -r requirements.txt
-#  - pip install urllib3[secure]
+install:
+  - pushd stack
+  - ansible-playbook -i ../test/local_inv.yml ../test/dstack_play.yml
+  - popd
 
 #before_script:
 
 script:
 
-  - pushd stack
-  - ansible-playbook -i ../test/local_inv.yml ../test/dstack_play.yml
-  - popd
-
   - python test/test_distrib.py
 
-#after_script: true
+#after_script:
 
