@@ -1,6 +1,7 @@
 # Requires workers with "default", "learn", and "file" queues
 
 import logging
+import os, ruamel_yaml as yaml
 from celery import chain
 from diana.connect.apis import Item, DicomLevel
 from diana.distrib.apis import RedisEndpoint as Redis, ClassificationEndpoint as Classifier, FileEndpoint as File, OrthancEndpoint as Orthanc
@@ -58,11 +59,15 @@ if __name__ == "__main__":
 
     logging.debug("Simple Distributed Diana Test Script")
 
+    service_cfg = os.environ.get("DIANA_SERVICES_CFG", "./services.yml")
+    with open(service_cfg, "r") as f:
+        services = yaml.safe_load(f)
+
     dcm_dir = "/Users/derek/data/DICOM/airway phantom/DICOM/PA2/ST1/SE1"
 
     files = File(location=dcm_dir)
-    orthanc = Orthanc(host="192.168.1.102")
+    orthanc = Orthanc(**services['orthanc'])
     clf = Classifier()
-    redis = Redis(host="192.168.33.10")
+    redis = Redis(**services['redis'])
 
     test_celery()

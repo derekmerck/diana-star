@@ -1,9 +1,9 @@
 import ruamel.yaml as yaml
+import os
 
-# Change this line to point at your project service configs
-# with open("../../_secrets/dev_services.yml", "r") as f:
-with open("../../_secrets/trusty_services.yml", "r") as f:
-        services = yaml.safe_load(f)
+service_cfg = os.environ.get("DIANA_SERVICES_CFG", "./services.yml")
+with open(service_cfg, "r") as f:
+    services = yaml.safe_load(f)
 
 splunk_cfg  = services.get('splunk')
 orthanc_cfg = services.get('orthanc')

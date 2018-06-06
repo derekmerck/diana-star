@@ -16,8 +16,8 @@
   docker_image:
      path: /opt/diana-star/stack/containers/diana-worker
      name: diana-worker
-     force: yes
-     nocache: yes
+#     force: yes
+#     nocache: yes
 
 # Should allow for multiple, give them unique ids
 - name: Start Worker
@@ -25,11 +25,11 @@
     name:  diana-worker
     image: diana-worker
     state: started
-    # Worker needs access to all central services
-    links:
-      - "broker-redis"
-      - "dicom-orthanc"
-      - "index-splunk"
+#    # Worker needs access to all central services
+#    links:
+#      - "broker-redis"
+#      - "dicom-orthanc"
+#      - "index-splunk"
     volumes:
     # Mount service info
       - "/opt/diana-star/apps/celery/services.yml:/home/celery/diana-star/apps/celery/services.yml"

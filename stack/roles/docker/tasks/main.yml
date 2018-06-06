@@ -67,4 +67,4 @@
   register: result
 
 - debug:
-    var: result
+    var: result.stdout

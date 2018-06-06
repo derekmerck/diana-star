@@ -18,6 +18,14 @@
       SPLUNK_CMD_2: "http-event-collector enable -enable-ssl 0 -uri https://localhost:8089 -auth admin:{{ splunk_pw }}"
       SPLUNK_CMD_3: "http-event-collector create diana_token 'diana index token' -index diana -uri https://localhost:8089 -auth admin:{{ splunk_pw }}"
 
+- name: Wait for service to be ready
+  wait_for:
+    port: 8000
+    host: 127.0.0.1
+    connect_timeout: 3
+    delay: 3
+    timeout: 30
+
 # ------------------------------------
 # Set hec_token for the rest of the playbook
 # ------------------------------------
