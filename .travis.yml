@@ -14,14 +14,14 @@ addons:
 
 before_install:
 
-  - pip3 install -U pip
-  - pip3 install docker-py
-  - pip3 install -e ./packages/diana
+  - pip install -U pip
+  - pip install docker-py
+  - pip install -e ./packages/diana
 
 
 install:
   - pushd stack
-  - python3 ansible-playbook -i ../test/local_inv.yml ../test/dstack_play.yml
+  - python3 `which ansible-playbook` -i ../test/local_inv.yml ../test/dstack_play.yml
   - popd
 
 #before_script:
