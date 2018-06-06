@@ -16,14 +16,15 @@ RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--"]
 
 RUN useradd -ms /bin/bash celery
-WORKDIR /home/celery
+
 RUN git clone https://github.com/derekmerck/diana-star
-RUN pip install -e ./diana-star/packages
-RUN sed -i 's^open(".*",^open("services.yml",^' diana-star/apps/celery/celerycfg.py
+RUN pip install -e /home/celery/diana-star/packages
+RUN sed -i 's^open(".*",^open("services.yml",^' /home/celery/diana-star/apps/celery/celerycfg.py
 #RUN echo "export PYTHONPATH=~/diana-star" >> .bashrc
 #RUN pip install -r diana-star/requirements.txt
 RUN chown -R celery /home/celery/diana-star
 
+WORKDIR /home/celery
 USER celery
 WORKDIR /home/celery/diana-star/apps/celery
 CMD python dcelery.py worker

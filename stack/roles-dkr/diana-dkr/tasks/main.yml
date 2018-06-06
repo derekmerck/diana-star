@@ -17,6 +17,7 @@
      path: /opt/diana-star/stack/containers/diana-worker
      name: diana-worker
      force: yes
+     nocache: yes
 
 # Should allow for multiple, give them unique ids
 - name: Start Worker
