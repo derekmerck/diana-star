@@ -1,13 +1,13 @@
 import setuptools
 from shutil import copyfile
 
-copyfile("../README.md", "README.md")
+copyfile("../../README.md", "README.md")
 # copyfile("../requirements.txt", "requirements.txt")
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-with open("../requirements.txt", "r") as fh:
+with open("../../requirements.txt", "r") as fh:
     reqs = fh.read().splitlines()
 
 setuptools.setup(

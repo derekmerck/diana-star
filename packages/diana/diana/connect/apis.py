@@ -16,7 +16,7 @@ import logging, os, time
 from redis import Redis
 from dill import loads, dumps
 import attr
-from diana.utils import Endpoint, Item, DicomLevel, OrthancRequester, SplunkRequester, DicomFileIO
+from diana.utils import Endpoint, DicomLevel, OrthancRequester, SplunkRequester, DicomFileIO
 from .utils.anon_map import simple_anon_map
 from .utils.orth_fiq import find_item_query
 from .dixel import Dx

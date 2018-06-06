@@ -1,5 +1,14 @@
+"""
+Prepare a DICOM tag set for ingestion into splunk:
+
+- Standardize dates and times as datetime objects
+- Identify a sensible creation datetime
+- Flatten and simplify ContentSequences in the manner of Orthanc's 'simplify' parameter
+- Add sensible defaults for missing station names and ctdi_vols in dose reports
+
+"""
+
 import logging, json
-from datetime import datetime
 from pprint import pprint, pformat
 from .smart_json import SmartEncoder
 from .dicom import dicom_strftime
@@ -51,7 +60,7 @@ def parse_timestamps(tags):
 # This allows us to standardize how ctdi keys are included in dose reports.  They exist
 # in Siemens reports, but are _not_ present on GE reports, which makes the data difficult
 # to parse with Splunk
-def normalize_ctdivol(tags):
+def normalize_ctdi_vol(tags):
 
     try:
         exposures = tags["X-Ray Radiation Dose Report"]["CT Acquisition"]
@@ -71,7 +80,7 @@ def normalize_ctdivol(tags):
     return tags
 
 # Make sure that a StationName is present or introduce a sensible alternative
-def normalize_stationname(tags):
+def normalize_station_name(tags):
 
     if "StationName" not in tags:
         try:
@@ -121,7 +130,7 @@ def simplify_content_sequence(tags):
             value = item['UID']
             # logging.debug('Found uid value')
         elif type_ == 'DATETIME':
-            value = get_datetime(item['DateTime'])
+            value = dicom_strftime(item['DateTime'])
             # logging.debug('Found date/time value')
         elif type_ == 'CODE':
             try:
@@ -148,8 +157,7 @@ def simplify_content_sequence(tags):
 
     return data
 
-
-def simplify_tags(tags):
+def simplify_structured_tags(tags):
 
     # Parse any structured data into simplified tag structure
     if tags.get('ConceptNameCodeSequence'):
@@ -157,7 +165,7 @@ def simplify_tags(tags):
         key = tags['ConceptNameCodeSequence'][0]['CodeMeaning']
         value = simplify_content_sequence(tags)
 
-        t = get_datetime(tags['ContentDate'] + tags['ContentTime'])
+        t = dicom_strftime(tags['ContentDate'] + tags['ContentTime'])
         value['ContentDateTime'] = t
 
         del(tags['ConceptNameCodeSequence'])
@@ -167,12 +175,22 @@ def simplify_tags(tags):
 
         tags[key] = value
 
+    return tags
+
+
+def clean_tags(tags):
+
+    # Flatten content sequences
+    tags = simplify_structured_tags(tags)
+
     # Convert timestamps to python datetimes
     tags = parse_timestamps(tags)
 
-    tags = normalize_ctdivol(tags)
+    # Deal with missing fields in ctdi_vol
+    tags = normalize_ctdi_vol(tags)
 
-    tags = normalize_stationname(tags)
+    # Deal with unnamed stations
+    tags = normalize_station_name(tags)
 
     # logging.info(pformat(tags))
 
@@ -188,7 +206,7 @@ def test_simplify():
         with open('/Users/derek/Desktop/{0}.json'.format(item)) as f:
             tags = json.load(f)
 
-        tags = simplify_tags(tags)
+        tags = clean_tags(tags)
 
         with open('/Users/derek/Desktop/{0}-simple.json'.format(item), 'w') as f:
             json.dump(tags, f, indent=3, cls=SmartEncoder, sort_keys=True)
