@@ -22,17 +22,20 @@ services:
 #  - mkdir -p $HOME/.docker
 #  - echo '{"experimental":"enabled"}' > "$HOME/.docker/config.json"
 
+before_install:
+
+  - sudo apt update
+  - python --version
+  - sudo apt upgrade python
+  - python --version
+
 install:
   - pip install -U pip
   - pip install -e ./packages
-
-  - python -c "import ansible; print(ansible.__version__)"
   - pip install -U ansible
-  - python -c "import ansible; print(ansible.__version__)"
 
 #  - pip install -r requirements.txt
 #  - pip install urllib3[secure]
-
 
 #before_script:
 

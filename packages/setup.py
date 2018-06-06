@@ -1,7 +1,14 @@
 import setuptools
+from shutil import copyfile
+
+copyfile("../README.md", "README.md")
+# copyfile("../requirements.txt", "requirements.txt")
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
+
+with open("../requirements.txt") as fh:
+    reqs = fh.read().splitlines()
 
 setuptools.setup(
     name="diana-star",
@@ -20,18 +27,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ),
     license='MIT',
-    install_requires=[
-        'aenum',
-        'ansible',
-        'attrs',
-        'bs4',
-        'celery',
-        'dateutils',
-        'dill',
-        'pillow',
-        'redis',
-        'ruamel.yaml',
-        'pydicom',
-        'requests'
-    ]
+    install_requires=reqs
 )

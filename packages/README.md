@@ -16,3 +16,55 @@ Hospital picture archive and communications systems (PACS) are not well suited f
 
 **diana-star** is a celery queuing system with a diana api.  This provides a backbone for distributed task management.  The "star" suffix is in honor of the historical side-note of Matlab's Star-P parallel computing library.
 
+
+## Dependencies
+
+- Python 3.6
+- Many Python packages
+
+
+## Installation
+
+```bash
+$ git clone https://www.github.com/derekmerck/DIANA
+$ pip install -r DIANA/requirements.txt
+```
+
+
+## Setup environment
+
+```bash
+$ git clone https://github.com/derekmerck/diana-star
+$ cd diana-star
+$ conda env create -f conda_env.yml -n diana
+$ pip install -e ./packages
+```
+
+
+## Test scripts with connect and celery app
+
+```bash
+# Reset test environment
+$ pushd test/vagrant && vagrant destroy && vagrant up && popd
+
+# Create an orthanc and an index
+$ cd stack
+$ ansible-playbook -i inv.yml ../test/simple_play.yml
+
+# Run a script
+$ python test/diana.py
+
+# Create a broker and some virtual workers for default
+$ ansible-playbook -i inv.yml ../test/distrib_play.yml
+
+# Create a local worker to manage the heartbeat and specialized jobs
+$ python apps/celery/dcelery worker -n heartbeat -B -Q "file,learn"
+
+# Distribute a script, default should be taken by the diana-service container
+$ python test/diana-star.py
+```
+
+
+## License
+
+MIT
