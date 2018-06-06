@@ -2,6 +2,7 @@ dist: trusty
 language: python
 python:
   - "3.6"
+  - "2.7"
 services:
   - docker
 
@@ -26,13 +27,12 @@ before_install:
 
   - sudo apt update
   - python --version
-  - sudo apt upgrade python
-  - python --version
+  - python2 --version
+  - python3 --version
+  - pip install -U pip
 
 install:
-  - pip install -U pip
   - pip install -e ./packages
-  - pip install -U ansible
 
 #  - pip install -r requirements.txt
 #  - pip install urllib3[secure]
