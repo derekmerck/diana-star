@@ -1,10 +1,4 @@
-# https://gist.github.com/rbq/886587980894e98b23d0eee2a1d84933
 ---
-
-
-#  - sudo apt-get update -qq
-#  - sudo apt-get -y install docker-ce
-
 
 - name:   Install prerequisites
   package:
@@ -16,22 +10,17 @@
       - python-pip
     update_cache: True
   become: yes
-  ignore_errors: yes  # Sometimes tries to update an older docker...
 
-- name:   Add Docker GPG key
-  apt_key:
-    url:  https://download.docker.com/linux/{{ ansible_os_family | lower }}/gpg
-    validate_certs: False
-  become: yes
+- name: Get docker version
+  shell: docker --version
+  register: result
 
-- name:   Add Docker APT repository
-  apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/{{ ansible_os_family | lower }} {{ansible_distribution_release}} edge
-  become: yes
+- debug:
+    var: result.stdout
 
-- name:   Install Docker
-  apt:    name=docker-ce
-  become: yes
+- name: Update docker if necessary
+  include_tasks: get_docker_play.yml
+  when: not "18" in result.stdout
 
 - name: Switch to experimental mode
   lineinfile:
@@ -59,12 +48,6 @@
 - debug:
     msg:  "Setting dockerhost bridge addr {{ dockerhost_ip }}"
 
-- name:   Get docker-py
+- name:   Install docker-py
   pip:    name=docker-py
 
-- name: Get docker version
-  shell: docker --version
-  register: result
-
-- debug:
-    var: result.stdout

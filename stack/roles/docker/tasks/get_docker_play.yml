@@ -1,0 +1,17 @@
+# https://gist.github.com/rbq/886587980894e98b23d0eee2a1d84933
+---
+
+- name:   Add Docker GPG key
+  apt_key:
+    url:  https://download.docker.com/linux/{{ ansible_os_family | lower }}/gpg
+    validate_certs: False
+  become: yes
+
+- name:   Add Docker APT repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/{{ ansible_os_family | lower }} {{ansible_distribution_release}} edge
+  become: yes
+
+- name:   Install Docker
+  apt:    name=docker-ce
+  become: yes
