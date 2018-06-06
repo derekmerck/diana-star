@@ -1,7 +1,7 @@
 import logging, json
 from datetime import datetime
 from pprint import pprint, pformat
-from .smart_json import DateTimeEncoder
+from .smart_json import SmartEncoder
 from .dicom import dicom_strftime
 
 
@@ -191,7 +191,7 @@ def test_simplify():
         tags = simplify_tags(tags)
 
         with open('/Users/derek/Desktop/{0}-simple.json'.format(item), 'w') as f:
-            json.dump(tags, f, indent=3, cls=DateTimeEncoder, sort_keys=True)
+            json.dump(tags, f, indent=3, cls=SmartEncoder, sort_keys=True)
 
 
 if __name__ == "__main__":
