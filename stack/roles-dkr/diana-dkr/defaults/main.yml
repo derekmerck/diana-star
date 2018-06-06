@@ -1,8 +1,12 @@
 ---
 
+orthanc_host: "{{ dockerhost_ip }}"
 orthanc_pw: passw0rd!
+
+redis_host: "{{ dockerhost_ip }}"
 redis_pw: passw0rd!
+
+splunk_host: "{{ dockerhost_ip }}"
 splunk_pw: passw0rd!
 diana_tok: 1234567
 
-host_ip: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"

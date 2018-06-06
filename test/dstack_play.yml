@@ -38,5 +38,11 @@
 - name: Setup Diana Workers (py36)
   hosts: diana
   tags: worker
+
+  vars:
+    orthanc_host: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+    redis_host:   "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+    splunk_host:  "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+
   roles:
   - role: diana-dkr

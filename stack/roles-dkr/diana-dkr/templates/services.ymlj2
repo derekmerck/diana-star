@@ -1,11 +1,11 @@
 orthanc:
-  host: {{ host_ip }}
+  host: {{ orthanc_host }}
   port: 8142
   user: orthanc
   password: {{ orthanc_pw }}
 
 redis:
-  host: {{ host_ip }}
+  host: {{ redis_host }}
   port: 6379
   broker_db: 1
   result_db: 2
@@ -13,7 +13,7 @@ redis:
   password: {{ redis_pw }}
 
 splunk:
-  host: {{ host_ip }}
+  host: {{ splunk_host }}
   port: 8000
   user: admin
   password: {{ splunk_pw }}

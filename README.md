@@ -64,6 +64,7 @@ $ python apps/celery/dcelery worker -n heartbeat -B -Q "file,learn"
 $ python test/diana-star.py
 ```
 
+If multiple environments are being used, the `services.yml` config should use addresses that are absolute and reachable for any workers or input scripts sharing a queue.  The parameters will be pickled and sent along with the task, so `localhost` or hostnames that are only defined on certain hosts will break it.
 
 ## License
 

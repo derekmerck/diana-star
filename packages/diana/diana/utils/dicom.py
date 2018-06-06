@@ -51,8 +51,31 @@ def orthanc_id(PatientID, StudyInstanceUID, SeriesInstanceUID=None, SOPInstanceU
 
 
 def dicom_strftime( dtm ):
-    return datetime.strftime(dtm, "%Y%m%d%H%M%S")
+
+    try:
+        # GE Scanner dt format
+        ts = datetime.strptime( dtm , "%Y%m%d%H%M%S")
+        return ts
+    except ValueError:
+        # Wrong format
+        pass
+
+    try:
+        # Siemens scanners use a slightly different aggregated format with fractional seconds
+        ts = datetime.strptime( dtm , "%Y%m%d%H%M%S.%f")
+        return ts
+    except ValueError:
+        # Wrong format
+        pass
+
+    logging.error("Can't parse date time string: {0}".format( dtm ))
+    ts = datetime.now()
+    return ts
+
 
 
 def dicom_strptime( dts ):
     return datetime.strptime( dts, "%Y%m%d%H%M%S" )
+
+
+

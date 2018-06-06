@@ -1,4 +1,5 @@
 import logging, time, collections
+from datetime import datetime
 import attr
 from bs4 import BeautifulSoup
 from .requester import Requester
@@ -94,9 +95,10 @@ class SplunkRequester(Requester):
             i = i + 1
         return instances
 
+
     def post_event(self, event, index="default", host=None, event_time=None, event_format=None):
 
-        data = collections.OrderedDict([('time', event_time or time.now() ),
+        data = collections.OrderedDict([('time', event_time or datetime.now() ),
                                         ('host', host or self.id),
                                         ('sourcetype', event_format or '_json'),
                                         ('index', index),

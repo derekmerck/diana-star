@@ -8,7 +8,6 @@ class DicomItem(Item):
     level = attr.ib(default=DicomLevel.STUDIES)
     file = attr.ib(repr=False, default=None)
 
-
     def oid(self, level=None):
         # This is not a property because a dixel can generate the OID for any higher level
         # - instances can return instance(default), series, study

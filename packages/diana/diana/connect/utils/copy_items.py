@@ -52,4 +52,3 @@ def copy_children(worklist, source, destination, **kwargs):
 
         for child in children:
             copy_item( child, source, destination, **kwargs)
-
