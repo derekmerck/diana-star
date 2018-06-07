@@ -15,3 +15,7 @@
 - name:   Install Docker
   apt:    name=docker-ce
   become: yes
+
+- name:   Install docker-py
+  pip:    name=docker-py
+

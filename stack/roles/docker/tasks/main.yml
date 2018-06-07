@@ -47,7 +47,3 @@
 
 - debug:
     msg:  "Setting dockerhost bridge addr {{ dockerhost_ip }}"
-
-- name:   Install docker-py
-  pip:    name=docker-py
-
