@@ -1,0 +1,1 @@
+Vanilla Diana-Worker node image

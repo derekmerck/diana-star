@@ -28,7 +28,7 @@ install:
 #  - docker --version
 #  - docker-compose version
 
-  # Put it into "experimental" for manifest function
+  # Put docker into "experimental" for manifest function
   - mkdir -p $HOME/.docker
   - echo '{"experimental":"enabled"}' > "$HOME/.docker/config.json"
 
@@ -42,6 +42,8 @@ install:
 before_script:
 
 # Build rcDiana service containers
+
+  - cd containers/rcdiana
 
   - export RCD_ARCH=amd64
   - echo "Setting up $RCD_ARCH build"
@@ -63,14 +65,21 @@ before_script:
   - sed -E -i "s/(amd64)|(armv7hf)/$RCD_ARCH/" container.yml  # Replace settings arches
   - ansible-container build
 
-script:
 
-  - python3 test/test_distrib.py
+
+script: True
+
+
+after_script:
+  # Login to docker, retag, manifest, and push
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  # -m mocks docker into experimental to have access to manifest
+  - python manifest-it.py -f service_manifest.yml
+
+
+#  - python3 test/test_distrib.py
 
 #after_script:
-
-
-
 
 
 

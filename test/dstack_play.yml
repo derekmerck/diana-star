@@ -13,7 +13,8 @@
 - name: Setup Index Endpoint (splunk)
   hosts: indexer
   roles:
-  - role: splunk-dkr
+  - role: splunk
+      containerize: True
 
 
 # -------------------
@@ -30,7 +31,8 @@
 - name: Setup Task Broker (redis)
   hosts: broker
   roles:
-  - role: redis-dkr
+  - role: redis
+      containerize: True
 
 
 # -------------------

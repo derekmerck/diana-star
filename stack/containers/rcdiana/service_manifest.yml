@@ -1,0 +1,9 @@
+namespace: rcdiana
+images:
+  - broker
+  - dicom
+  - worker
+  - movidius
+architectures:
+  - amd64
+  - armv7l

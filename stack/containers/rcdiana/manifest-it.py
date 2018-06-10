@@ -37,18 +37,25 @@ https://raw.githubusercontent.com/docker-library/official-images/a7ad3081aa5f515
 import yaml, logging
 from subprocess import call
 from argparse import ArgumentParser
-import os
 
 def parse_args():
 
-    p = ArgumentParser("manifest-it.py can retag, manifest, and push multiple services and architecture produced by ansible-container using the 'project-arch-service' naming convention.  Manifesting requires docker-ce edge in 'experimental mode'.")
+    p = ArgumentParser("Retag, manifest, and push multiple services and architecture produced by ansible-container with the 'project-arch-service' naming convention.  Manifesting requires docker-ce edge in 'experimental mode'.")
     p.add_argument("-n", "--namespace", help="Target namespace", default="rcdiana")
     p.add_argument("-a", "--architectures", help="Multiarchitecture manifest entries", default=["amd64", "armv7hf"])
-    p.add_argument("-i", "--images", help="List of service images to process (required)", required=True)
+    p.add_argument("-i", "--images", help="List of service images to process")
     p.add_argument("-f", "--file", help="yml file with manifest rules")
     p.add_argument('-d', '--dryrun', action="store_true", help="Retag and manifest but do not push")
 
     opts = p.parse_args()
+
+    if opts.file:
+        with open(opts.file, 'r') as f:
+            data = yaml.safe_load(f)
+            opts.namespace = data.get('namespace', opts.namespace)
+            opts.images = data.get('images', opts.images)
+            opts.architectures = data.get('architectures', opts.architectures)
+
     return opts
 
 def docker_tag(target, tag):

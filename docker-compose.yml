@@ -10,7 +10,7 @@ version: '2.1'
 
 services:
 
-  # Dicom proxy service
+  # Private orthanc dicom proxy service
   dicom:
     image: rcdiana/dicom:armv7l
     restart: always
@@ -19,15 +19,15 @@ services:
       - "4242:4242"
       - "8042:8042"  # Putting this on 80 makes it publishable on Resin
 
-  # Broker service
+  # Private redis broker service
   broker:
-    image: rcdiana/redis:armv7l
+    image: rcdiana/broker:armv7l
     restart: always
     privileged: true
     ports:
-      - "6378:6378"
+      - "6379:6379"
 
-  # Worker service
+  # Diana-Worker service
   diana:
     image: rcdiana/diana:armv7l
     restart: always
@@ -38,7 +38,7 @@ services:
 
   # Fast, low power CNN service
   movidius:
-    image: rcdiana/learn:armv7l
+    image: rcdiana/movidius:armv7l
     restart: always
     privileged: true
     network_mode: host

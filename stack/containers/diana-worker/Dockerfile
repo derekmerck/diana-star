@@ -1,8 +1,9 @@
 # Minimal Diana Worker Image
 # Derek Merck, Spring 2018
 #
-# - Presumes 'services.yml' is copied or mounted to /home/diana-star/apps/celery/
+# - Presumes 'diana_services.yml' is copied or mounted to /etc/diana_services.yml
 # - Change the queue by overriding CMD on start up
+#   e.g., command="python dcelery.py worker -B -Q my_queue"
 
 FROM python:3.6-stretch
 MAINTAINER Derek Merck <derek_merck@brown.edu>
@@ -21,7 +22,7 @@ RUN git clone https://github.com/derekmerck/diana-star
 
 WORKDIR /home/celery/diana-star
 RUN pip install -e packages/diana packages/guid-mint
-RUN sed -i 's^open(".*",^open("services.yml",^' apps/celery/celerycfg.py
+RUN sed -i 's^open(".*",^open("/etc/diana_services.yml",^' apps/celery/celerycfg.py
 RUN chown -R celery /home/celery/diana-star
 
 USER celery
