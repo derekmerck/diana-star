@@ -1,16 +1,5 @@
 ---
 
-- name:   Install prerequisites
-  package:
-    name:
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - software-properties-common
-      - python-pip
-    update_cache: True
-  become: yes
-
 - name: Get docker version
   shell: docker --version
   register: result

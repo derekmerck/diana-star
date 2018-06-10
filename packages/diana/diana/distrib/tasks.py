@@ -4,7 +4,7 @@ from diana.connect.apis import DianaFactory
 # Note: adding (bind=true) to the decorator provides access to a "self"
 # object for introspection.
 
-# This is a much more general task-passing wrapper
+# Low-level, general task-passing wrapper
 # Item always has to be first though, b/c it's the output of the previous
 # link in a chain...
 @app.task(bind=True)
@@ -22,3 +22,23 @@ def do(self, *args, **kwargs):
     func = endpoint.__getattribute__(method)
 
     return func(*args, **kwargs)
+
+
+def demux(self, *args, **kwargs):
+    pass
+
+
+"""
+save_files:
+  - src: OrthancEndpoint
+      host: localhost
+      user: orthanc
+      password: orthanc
+    q: *
+    remove: true
+    
+  - dest: file
+      location: "/tmp/test"
+
+"""
+

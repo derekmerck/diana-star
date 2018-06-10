@@ -1,0 +1,18 @@
+---
+- name: Install redis
+  apt:
+    name: redis-server
+
+- name: Create redis user
+  user:
+    name: redis
+    uid: 1000
+    group: root
+    state: present
+    createhome: yes
+    home: /redis
+
+- name: Start redis
+  service:
+    name: redis-server
+    enabled: true

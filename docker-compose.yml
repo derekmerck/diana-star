@@ -1,0 +1,47 @@
+# rcDiana simple service setup
+
+# rcdiana is multiarch, so this is typically sufficient for a manual install
+# on either amd64 (intel) or armv7hf (raspberry pi)
+
+# On resin may need to add ":armv7hf" tags for raspberry pi b/c the uploader is
+# arm64 and will try to grab arm64 by preference rather that the target arch.
+
+version: '2.1'
+
+services:
+
+  # Dicom proxy service
+  dicom:
+    image: rcdiana/dicom:armv7l
+    restart: always
+    privileged: true
+    ports:
+      - "4242:4242"
+      - "8042:8042"  # Putting this on 80 makes it publishable on Resin
+
+  # Broker service
+  broker:
+    image: rcdiana/redis:armv7l
+    restart: always
+    privileged: true
+    ports:
+      - "6378:6378"
+
+  # Worker service
+  diana:
+    image: rcdiana/diana:armv7l
+    restart: always
+    privileged: true
+
+  # Install a beat to monitor the dicom service, or for a proxied dicom service
+  # Install a handler for indexing, routing, or post-processing inputs
+
+  # Fast, low power CNN service
+  movidius:
+    image: rcdiana/learn:armv7l
+    restart: always
+    privileged: true
+    network_mode: host
+    volumes:
+      - "/dev:/dev"
+

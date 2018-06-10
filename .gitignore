@@ -10,4 +10,5 @@ dump*
 notes.md
 
 build
+deploy
 *.egg-*

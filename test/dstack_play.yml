@@ -21,7 +21,8 @@
 - name: Setup DICOM Endpoint (orthanc)
   hosts: dicom
   roles:
-  - role: orthanc-dkr
+  - role: orthanc
+      containerize: True
 
 
 # -------------------

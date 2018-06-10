@@ -1,0 +1,31 @@
+---
+
+# Respects ENVs:
+# - BROKER_HOST, BROKER_PW
+
+- name: Add system reqs
+  package:
+    name:
+      - git
+      - python3
+      - python3-numpy
+      - python3-setuptools
+      - python3-pip
+
+- name: Create diana user
+  user:
+    name: diana
+    uid: 1000
+    group: root
+    state: present
+#    createhome: yes
+#    home: /diana
+
+- git:
+    repo: 'https://github.com/derekmerck/diana-star'
+    dest: /opt/diana
+
+- pip:
+    name: /opt/diana/packages/diana /opt/diana/packages/guid-mint
+    editable: yes
+
