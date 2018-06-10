@@ -65,7 +65,7 @@ before_script:
   # Register qemu as cross-compiler
   - docker run --rm --privileged multiarch/qemu-user-static:register --reset
 
-  - cd containers/rcdiana
+  - cd stack/containers/rcdiana
 
   - export RCD_ARCH=amd64
   - echo "Setting up $RCD_ARCH build"

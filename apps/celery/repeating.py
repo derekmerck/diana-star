@@ -5,7 +5,7 @@ from diana.distrib.dcelery import app
 from diana.distrib.apis import *
 from diana.utils.dicom import DicomLevel
 
-# If you are a generator, you will need a service stack
+# Need a service stack to generate events
 
 if os.path.exists("./services.yml"):
     service_path = "./services.yml"
@@ -18,7 +18,6 @@ with open( service_path, "r" ) as f:
     services = yaml.safe_load(f)
 
 orthanc = OrthancEndpoint(**services['orthanc'])
-
 splunk = SplunkEndpoint(**services['orthanc'])
 
 beat_schedule = {
@@ -40,34 +39,24 @@ beat_schedule = {
         'schedule': 5.0 * 60.0,  # Every 5 minutes
         'args': (orthanc, splunk),
         'kwargs': {'timerange': ("-10m", "now")}
-    },
-
-    # 'index_series': {
-    #     'task': 'index_series',
-    #     'schedule': 5.0 * 60.0,
-    #     'args': (orthanc, splunk),
-    #     'kwargs': {'splunk_index': 'dose_reports',
-    #                'timerange': ("-10m", "now")
-    #               }
-    #     }
+    }
 
 }
 
 
 @app.task
-def index_new_series(orthanc, splunk, timerange=("-10m", "now")):
+def index_new_series(orthanc, splunk):
 
-    q = { "new series",
-          timerange }
+    q = { "new series" }
     ids = orthanc.find( q )
 
     for id in ids:
-        dixel = orthanc.getstar( id )
+        dixel = orthanc.getstar( id ).get()
         splunk.putstar(dixel)
 
         # or
-
-        chain( orthanc.get_s(id) | splunk.put_s() )()
+        #
+        # chain( orthanc.get_s(id) | splunk.put_s() )()
 
 
 def index_dose_reports(orthanc, splunk, timerange=("-10m", "now")):
@@ -77,10 +66,23 @@ def index_dose_reports(orthanc, splunk, timerange=("-10m", "now")):
     ids = splunk.find(q)
 
     for id in ids:
-        dixel = orthanc.getstar( id, level=DicomLevel.SERIES )
-        splunk.putstar( dixel, index=splunk.series_index )
+
+        data = orthanc.getstar( id, 'meta' )
+        instances = data['instances']
+        for oid in instances:
+            dixel = orthanc.getstar( oid, level=DicomLevel.INSTANCES ).get()
+            splunk.putstar( dixel, index=splunk.dose_index )
 
         # or
-
-        # chain(orthanc.get_s(id, level=DicomLevel.SERIES) | splunk.put_s(index=splunk.series_index))()
         #
+        # chain(orthanc.get_s(id, level=DicomLevel.SERIES) | splunk.put_s(index=splunk.series_index))()
+
+def route(orthanc0, orthanc1, anon_map=None):
+
+    q = { "new series" }
+    ids = orthanc0.find( q )
+
+    for id in ids:
+        dixel = orthanc0.getstar( id ).get()
+        orthanc1.putstar( dixel )
+        orthanc0.remove( dixel )
