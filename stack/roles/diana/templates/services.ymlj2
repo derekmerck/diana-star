@@ -1,10 +1,10 @@
-orthanc:
+dicom:
   host: {{ orthanc_host }}
   port: 8142
   user: orthanc
   password: {{ orthanc_pw }}
 
-redis:
+broker:
   host: {{ redis_host }}
   port: 6379
   broker_db: 1
@@ -12,7 +12,7 @@ redis:
   user: redis
   password: {{ redis_pw }}
 
-splunk:
+index:
   host: {{ splunk_host }}
   port: 8000
   user: admin

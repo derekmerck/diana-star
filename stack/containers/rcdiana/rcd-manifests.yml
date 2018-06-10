@@ -1,0 +1,63 @@
+- image: "rcdiana/dicom:latest"
+  manifests:
+    -
+      image: "rcdiana/dicom:armv7hf"
+      ac_name: rcdiana-armv7hf-dicom
+      platform:
+        architecture: arm
+        variant: v7
+        os: linux
+    -
+      image: "rcdiana/dicom:amd64"
+      ac_name: rcdiana-amd64-dicom
+      platform:
+        architecture: amd64
+        os: linux
+
+- image: rcdiana/broker:latest
+  manifests:
+    -
+      image: "rcdiana/broker:armv7hf"
+      ac_name: rcdiana-armv7hf-broker
+      platform:
+        architecture: arm
+        variant: v7
+        os: linux
+    -
+      image: "rcdiana/broker:amd64"
+      ac_name: rcdiana-amd64-broker
+      platform:
+        architecture: amd64
+        os: linux
+
+- image: rcdiana/worker:latest
+  manifests:
+    -
+      image: "rcdiana/worker:armv7hf"
+      ac_name: rcdiana-armv7hf-worker
+      platform:
+        architecture: arm
+        variant: v7
+        os: linux
+    -
+      image: "rcdiana/worker:amd64"
+      ac_name: rcdiana-amd64-worker
+      platform:
+        architecture: amd64
+        os: linux
+
+- image: rcdiana/movidius:latest
+  manifests:
+    -
+      image: "rcdiana/movidius:armv7hf"
+      ac_name: rcdiana-armv7hf-movidius
+      platform:
+        architecture: arm
+        variant: v7
+        os: linux
+    -
+      image: "rcdiana/movidius:amd64"
+      ac_name: rcdiana-amd64-movidius
+      platform:
+        architecture: amd64
+        os: linux

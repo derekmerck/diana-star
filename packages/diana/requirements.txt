@@ -1,5 +1,4 @@
 aenum
-ansible
 attrs
 bs4
 celery

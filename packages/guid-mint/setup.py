@@ -7,9 +7,6 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-with open("requirements.txt", "r") as fh:
-    reqs = fh.read().splitlines()
-
 setuptools.setup(
     name="guid-mint",
     version="0.0.2",
@@ -27,6 +24,5 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ),
-    license='MIT',
-    install_requires=reqs
+    license='MIT'
 )

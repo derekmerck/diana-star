@@ -35,14 +35,14 @@
 
 - git:
     repo: 'https://github.com/movidius/ncsdk'
-    dest: /ncsdk2
+    dest: /opt/ncsdk2
     version: ncsdk2
     force: yes
 
 # Edit the wrong-os fail states out of make install
-- shell: sed -i 's/exit 1//g' /ncsdk2/install.sh
+- shell: sed -i 's/exit 1//g' /opt/ncsdk2/install.sh
 
 # Run the installer
 - make:
-    chdir: /ncsdk2
+    chdir: /opt/ncsdk2
     target: install
