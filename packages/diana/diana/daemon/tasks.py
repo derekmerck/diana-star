@@ -84,6 +84,25 @@ def index_remote( proxy, remote_aet, index, dcm_query=None, splunk_query=None, t
 @app.task
 def route( source, dest, **kwargs ):
 
-    # Use the "recent changes" feed
-    worklist = source.get("new", level=DicomLevel.INSTANCES)
-    copy_items( worklist, source, dest, **kwargs )
+    current = 0
+    done = False
+
+    while not done:
+        changes = source.changes( since=current, limit=10 )
+        ret = source.requester.do_get('changes', params={ "since": current, "limit": 10 })
+
+        for change in ret['Changes']:
+            # We are only interested interested in the arrival of new instances
+            if change['ChangeType'] == 'NewInstance':
+                source.send( change['ID'], dest, level=DicomLevel.INSTANCES ).get()
+                source.remove( change['ID'], level=DicomLevel.INSTANCES )
+
+        current = ret['Last']
+        done = ret['Done']
+
+    source.changes( clear=True )
+    source.exports( clear=True )
+
+
+
+

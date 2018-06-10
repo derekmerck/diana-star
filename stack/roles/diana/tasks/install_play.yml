@@ -24,7 +24,7 @@
 - name: Create diana user
   user:
     name: diana
-    uid: 1000
+#    uid: 1000
     group: root
     state: present
 
