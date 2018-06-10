@@ -1,40 +1,18 @@
-import ruamel.yaml as yaml
 import os
 
-service_cfg = os.environ.get("DIANA_SERVICES_CFG", "./services.yml")
-with open(service_cfg, "r") as f:
-    services = yaml.safe_load(f)
+broker_host = os.environ.get("BROKER_HOST", "localhost")
+broker_port = os.environ.get("BROKER_PORT", "6379")
+broker_db   = os.environ.get("BROKER_DB", "1")
+result_db   = os.environ.get("BROKER_HOST", "2")
+broker_pw   = os.environ.get("BROKER_PW", "passw0rd!")
 
-splunk_cfg  = services.get('splunk')
-orthanc_cfg = services.get('orthanc')
-redis_cfg   = services.get('redis')
-
-broker_url     = "redis://{host}:{port}/{broker_db}".format(**redis_cfg)
-result_backend = "redis://{host}:{port}/{result_db}".format(**redis_cfg)
+broker_url     = "redis://{broker_host}:{broker_port}/{broker_db}".format(
+                    broker_host=broker_host,
+                    broker_port=broker_port,
+                    broker_db=broker_db )
+result_backend = "redis://{broker_host}:{broker_port}/{result_db}".format(
+                    broker_host=broker_host,
+                    broker_port=broker_port,
+                    result_db=result_db )
 
 timezone = 'America/New_York'
-
-beat_schedule = {
-    'status_report': {
-        'task': 'message',
-        'schedule': 60.0,  # Every 30 seconds
-        'args': ["All ok"]
-    },
-
-    # 'index_dose_reports': {
-    #     'task': 'index_dose_reports',
-    #     'schedule': 5.0 * 60.0,  # Every 5 minutes
-    #     'args': (orthanc, splunk),
-    #     'kwargs': { 'timerange': ("-10m", "now") }
-    # },
-
-    # 'index_series': {
-    #     'task': 'index_series',
-    #     'schedule': 5.0 * 60.0,
-    #     'args': (orthanc, splunk),
-    #     'kwargs': {'splunk_index': 'dose_reports',
-    #                'timerange': ("-10m", "now")
-    #               }
-    #     }
-
-}

@@ -1,0 +1,1 @@
+from .dcelery import app

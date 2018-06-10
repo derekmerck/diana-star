@@ -14,6 +14,12 @@
       - python3-setuptools
       - python3-pip
       - build-essential
+      - libjpeg-dev
+      - zlib1g-dev
+      - libtiff5-dev
+
+- shell: pip3 install -U pip
+  become: yes
 
 - name: Create diana user
   user:
@@ -21,9 +27,6 @@
     uid: 1000
     group: root
     state: present
-
-- set_fact:
-    restart_from_here: "A dog"
 
 - git:
     repo: 'https://github.com/derekmerck/diana-star'
@@ -35,4 +38,3 @@
       - /opt/diana/packages/diana
       - /opt/diana/packages/guid-mint
     editable: yes
-

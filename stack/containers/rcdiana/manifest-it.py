@@ -69,7 +69,7 @@ def docker_push(tag):
     call(cmd)
 
 def docker_manifest_create(tag, aliases):
-    cmd = ['docker', 'manifest', 'create', tag, *aliases]
+    cmd = ['docker', 'manifest', 'create', tag, *aliases, "--amend"]
     logging.debug(cmd)
     call(cmd)
 
@@ -112,7 +112,7 @@ if __name__ == "__main__":
         docker_manifest_create(main_tag, alias_tags)
 
     for i in opts.images:
-        main_tag = "{}/{}:latest"
+        main_tag = "{}/{}:latest".format(n,i)
         for a in opts.architectures:
 
             if a == "armv7hf":

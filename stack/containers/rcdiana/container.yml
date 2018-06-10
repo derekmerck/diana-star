@@ -7,23 +7,23 @@
 version: "2"
 
 defaults:
-#  rcd_arch: "amd64"
-  rcd_arch: "armv7hf"
+  rcd_arch: "amd64"
+#  rcd_arch: "armv7hf"
   root_pw: D1ana!
 
 settings:
 
   conductor:
     # defaults vars don't work in here, update archicture in base and project
-#    base: "resin-amd64:stretch"
-    base: "resin-armv7hf:stretch"
+    base: "resin-amd64:stretch"
+#    base: "resin-armv7hf:stretch"
     roles_path:
       - ../../roles   # Specify a local path containing Ansible roles
     # volumes:        # Provide a list of volumes to mount
     environment: []   # List or mapping of environment variables
 
-#  project_name: "rcdiana-amd64"
-  project_name: "rcdiana-armv7hf"
+  project_name: "rcdiana-amd64"
+#  project_name: "rcdiana-armv7hf"
   deployment_output_path: ../deploy
 
 services:

@@ -6,4 +6,4 @@ images:
   - movidius
 architectures:
   - amd64
-  - armv7l
+  - armv7hf
