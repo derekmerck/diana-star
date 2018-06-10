@@ -21,6 +21,9 @@
 #    createhome: yes
 #    home: /diana
 
+- set_fact:
+    restart_here: True
+
 - git:
     repo: 'https://github.com/derekmerck/diana-star'
     dest: /opt/diana
