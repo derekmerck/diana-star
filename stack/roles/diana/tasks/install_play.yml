@@ -26,6 +26,9 @@
     dest: /opt/diana
 
 - pip:
-    name: /opt/diana/packages/diana /opt/diana/packages/guid-mint
+    executable: pip3
+    name:
+      - /opt/diana/packages/diana
+      - /opt/diana/packages/guid-mint
     editable: yes
 

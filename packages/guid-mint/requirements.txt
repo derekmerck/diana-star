@@ -1,0 +1,12 @@
+aenum
+ansible
+attrs
+bs4
+celery
+dateutils
+dill
+pillow
+redis
+ruamel.yaml
+pydicom
+requests
